@@ -1,0 +1,48 @@
+scalar Date
+
+type Query {
+  cities: [City]
+  cityById(id: ID!): City
+  citiesByStateId(id: ID!): [City]
+}
+
+type City {
+  id: ID!
+  state_id: Int
+  name: String
+  status: Boolean
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  state: State
+}
+
+type State {
+  id: ID!
+  name: String
+  country_id: Int
+  state_code: String
+  status: Boolean
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  cities: [City]
+  citiesByStateId(id: ID!): [City]
+  country: Country
+}
+
+type Country {
+  id: ID!
+  country_name: String
+  country_code: String
+  iso3: String
+  phone_code: String
+  status: Boolean
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  states: [State]
+}

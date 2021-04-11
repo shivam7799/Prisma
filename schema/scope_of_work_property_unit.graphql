@@ -1,0 +1,40 @@
+scalar Date
+
+type Query {
+  scope_of_work_property_units: [Scope_Of_Work_Property_Unit]
+  scope_of_work_property_unitById(id: ID!): Scope_Of_Work_Property_Unit
+}
+
+type Mutation {
+  saveScopeOfWorkPropertyUnit(data: [Save_Property_Unit_Type]): String
+}
+
+type Scope_Of_Work_Property_Unit {
+  id: ID!
+  project_proposal_id: Int!
+  area_of_work_id: Int!
+  property_unit_attribute_id: Int!
+  value: String
+  attribute_custom_name: String
+  attribute_custom_value: String
+  attribute_custom_unit: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}
+
+input Save_Property_Unit_Type {
+  id: Int
+  project_proposal_id: Int!
+  area_of_work_id: Int!
+  property_unit_attribute_id: Int!
+  value: String
+  attribute_custom_name: String
+  attribute_custom_value: String
+  attribute_custom_unit: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

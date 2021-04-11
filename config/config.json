@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": null,
+    "database": "build_contractor",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "",
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "contractroot",
+    "password": "Contract$586",
+    "database": "contract_builder",
+    "host": "database-1.cluster-cguaj3ut7kdb.us-west-2.rds.amazonaws.com",
+    "dialect": "mysql"
+  }
+}

@@ -1,0 +1,22 @@
+scalar Date
+
+type Query {
+  users: [User]
+  userById(id: ID!): User
+}
+
+type Mutation {
+  createUser(user_type: String!, email: String!, created_by: Int): User!
+  updateUser(id: ID!, user_type: String, email: String, updated_by: Int): User!
+  deleteUser(id: ID!): String
+}
+
+type User {
+  id: ID!
+  user_type: String
+  email: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

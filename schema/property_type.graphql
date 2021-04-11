@@ -1,0 +1,26 @@
+scalar Date
+
+type Query {
+  property_types: [Property_Type]
+  property_typeById(id: ID!): Property_Type
+}
+
+type Property_Type {
+  id: ID!
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}
+
+type Property_Sub_Type {
+  id: ID!
+  name: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  property_type: Property_Type
+}

@@ -1,0 +1,58 @@
+scalar Date
+
+type Query {
+  product_attribute_units: [Product_Attribute_Unit]
+  product_attribute_unitById(id: ID!): Product_Attribute_Unit
+}
+
+type Product_Attribute_Unit {
+  id: ID!
+  name: String
+  attribute_id: Int
+  product_id: Int
+  attribute_unit_id: Int
+  html_element_type: String
+  display_order: Int
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  attribute: Attribute
+  product: Product
+  attribute_unit: Attribute_Unit
+}
+
+type Attribute {
+  id: ID!
+  name: String
+  parent_id: Int
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  product_attribute_units: [Product_Attribute_Unit]
+}
+
+type Product {
+  id: ID!
+  parent_id: Int
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  product_attribute_units: [Product_Attribute_Unit]
+}
+
+type Attribute_Unit {
+  id: ID!
+  unit_name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  product_attribute_units: [Product_Attribute_Unit]
+}

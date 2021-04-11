@@ -1,0 +1,16 @@
+scalar Date
+
+type Query {
+  project_types: [Project_Type]
+  project_typeById(id: ID!): Project_Type
+}
+
+type Project_Type {
+  id: ID!
+  type: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

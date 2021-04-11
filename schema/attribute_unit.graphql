@@ -1,0 +1,17 @@
+scalar Date
+
+type Query {
+  attribute_units: [Attribute_Unit]
+  attribute_unitById(id: ID!): Attribute_Unit
+}
+
+type Attribute_Unit {
+  id: ID!
+  attribute_parent_id: Int
+  unit_name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

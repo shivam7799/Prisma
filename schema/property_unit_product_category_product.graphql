@@ -1,0 +1,19 @@
+scalar Date
+
+type Query {
+  property_unit_product_category_products: [Property_Unit_Product_Category_Product]
+  property_unit_product_category_productById(
+    id: ID!
+  ): Property_Unit_Product_Category_Product
+}
+
+type Property_Unit_Product_Category_Product {
+  id: ID!
+  property_unit_product_category_id: Int!
+  product_id: Int!
+  display_order: Int
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

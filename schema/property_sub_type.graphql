@@ -1,0 +1,31 @@
+scalar Date
+
+type Query {
+  property_sub_types: [Property_Sub_Type]
+  property_sub_typeById(id: ID!): Property_Sub_Type
+  findByPropertyTypeId(id: ID!): [Property_Sub_Type]
+}
+
+type Property_Sub_Type {
+  id: ID!
+  property_type_id: Int
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  property_type: Property_Type
+}
+
+type Property_Type {
+  id: ID!
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  property_sub_types: [Property_Sub_Type]
+  findByPropertyTypeId(id: ID!): [Property_Sub_Type]
+}

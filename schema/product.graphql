@@ -1,0 +1,17 @@
+scalar Date
+
+type Query {
+  products: [Product]
+  productById(id: ID!): Product
+}
+
+type Product {
+  id: ID!
+  parent_id: Int!
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

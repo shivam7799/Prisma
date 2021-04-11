@@ -1,0 +1,19 @@
+scalar Date
+
+type Query {
+  property_unit_attributes: [Property_Unit_Attribute]
+  property_unit_attributeById(id: ID!): Property_Unit_Attribute
+}
+
+type Property_Unit_Attribute {
+  id: ID!
+  property_unit_id: Int!
+  attribute_id: Int!
+  attribute_unit_id: Int!
+  html_element_type: String
+  display_order: Int
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

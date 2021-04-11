@@ -1,0 +1,514 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model AreaOfWorks {
+  id                       Int                        @id @default(autoincrement())
+  project_proposal_id      Int
+  unit_location_id         Int
+  new_unit                 String?                    @db.VarChar(255)
+  existing_unit            String?                    @db.VarChar(255)
+  unit_alias               String?                    @db.VarChar(255)
+  work_type                String?                    @db.VarChar(255)
+  created_at               DateTime                   @default(now()) @db.DateTime(0)
+  updated_at               DateTime                   @default(now()) @db.DateTime(0)
+  created_by               Int?                       @default(1)
+  updated_by               Int?                       @default(1)
+  ProjectProposals         ProjectProposals           @relation(fields: [project_proposal_id], references: [id])
+  UnitLocations            UnitLocations              @relation(fields: [unit_location_id], references: [id])
+  ScopeOfWorkPropertyUnits ScopeOfWorkPropertyUnits[]
+  ScopeOfWorks             ScopeOfWorks[]
+
+  @@index([project_proposal_id], name: "project_proposal_id")
+  @@index([unit_location_id], name: "unit_location_id")
+}
+
+model Attributes {
+  id                     Int                      @id @default(autoincrement())
+  parent_id              Int?
+  name                   String?                  @db.VarChar(255)
+  slug                   String?                  @unique @db.VarChar(255)
+  created_at             DateTime                 @default(now()) @db.DateTime(0)
+  updated_at             DateTime                 @default(now()) @db.DateTime(0)
+  created_by             Int?                     @default(1)
+  updated_by             Int?                     @default(1)
+  Attributes             Attributes?              @relation("AttributesToAttributes_parent_id", fields: [parent_id], references: [id])
+  other_Attributes       Attributes[]             @relation("AttributesToAttributes_parent_id")
+  AttributeUnits         AttributeUnits[]
+  ProductAttributeUnits  ProductAttributeUnits[]
+  PropertyUnitAttributes PropertyUnitAttributes[]
+
+  @@index([parent_id], name: "parent_id")
+}
+
+model AttributeUnits {
+  id                     Int                      @id @default(autoincrement())
+  attribute_parent_id    Int?
+  unit_name              String?                  @db.VarChar(255)
+  slug                   String?                  @unique @db.VarChar(255)
+  created_at             DateTime                 @default(now()) @db.DateTime(0)
+  updated_at             DateTime                 @default(now()) @db.DateTime(0)
+  created_by             Int?                     @default(1)
+  updated_by             Int?                     @default(1)
+  Attributes             Attributes?              @relation(fields: [attribute_parent_id], references: [parent_id])
+  ProductAttributeUnits  ProductAttributeUnits[]
+  PropertyUnitAttributes PropertyUnitAttributes[]
+
+  @@index([attribute_parent_id], name: "attribute_parent_id")
+}
+
+model Backend_Users {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  first_name String?  @db.VarChar(255)
+  last_name  String?  @db.VarChar(255)
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @default(now()) @db.DateTime(0)
+  created_by Int?     @default(1)
+  updated_by Int?     @default(1)
+  Users      Users    @relation(fields: [user_id], references: [id])
+
+  @@index([user_id], name: "user_id")
+}
+
+model Cities {
+  id                 Int                  @id @default(autoincrement())
+  state_id           Int
+  name               String               @db.VarChar(255)
+  status             Boolean              @default(true)
+  created_at         DateTime             @default(now()) @db.DateTime(0)
+  updated_at         DateTime             @default(now()) @db.DateTime(0)
+  created_by         Int?                 @default(1)
+  updated_by         Int?                 @default(1)
+  States             States               @relation(fields: [state_id], references: [id])
+  Property_Addresses Property_Addresses[]
+
+  @@unique([state_id, name], name: "state_id_name")
+}
+
+model Contractors {
+  id           Int      @id @default(autoincrement())
+  user_id      Int
+  first_name   String?  @db.VarChar(255)
+  last_name    String?  @db.VarChar(255)
+  mobile       String?  @db.VarChar(255)
+  company_name String?  @db.VarChar(255)
+  created_at   DateTime @default(now()) @db.DateTime(0)
+  updated_at   DateTime @default(now()) @db.DateTime(0)
+  created_by   Int?     @default(1)
+  updated_by   Int?     @default(1)
+  Users        Users    @relation(fields: [user_id], references: [id])
+
+  @@index([user_id], name: "user_id")
+}
+
+model Countries {
+  id           Int      @id @default(autoincrement())
+  country_name String   @db.VarChar(255)
+  country_code String   @unique @db.Char(2)
+  iso3         String?  @db.Char(3)
+  phone_code   String?  @db.VarChar(5)
+  status       Boolean  @default(true)
+  created_at   DateTime @default(now()) @db.DateTime(0)
+  updated_at   DateTime @default(now()) @db.DateTime(0)
+  created_by   Int?     @default(1)
+  updated_by   Int?     @default(1)
+  States       States[]
+}
+
+model ProductAttributeUnits {
+  id                         Int                          @id @default(autoincrement())
+  name                       String?                      @db.VarChar(255)
+  product_id                 Int
+  attribute_id               Int
+  attribute_unit_id          Int
+  html_element_type          String?                      @db.VarChar(255)
+  display_order              Int?                         @default(0)
+  created_at                 DateTime                     @default(now()) @db.DateTime(0)
+  updated_at                 DateTime                     @default(now()) @db.DateTime(0)
+  created_by                 Int?                         @default(1)
+  updated_by                 Int?                         @default(1)
+  Attributes                 Attributes                   @relation(fields: [attribute_id], references: [id])
+  AttributeUnits             AttributeUnits               @relation(fields: [attribute_unit_id], references: [id])
+  Products                   Products                     @relation(fields: [product_id], references: [id])
+  ProductAttributeUnitValues ProductAttributeUnitValues[]
+  ScopeOfWorks               ScopeOfWorks[]
+
+  @@index([attribute_id], name: "attribute_id")
+  @@index([attribute_unit_id], name: "attribute_unit_id")
+  @@index([product_id], name: "product_id")
+}
+
+model ProductAttributeUnitValues {
+  id                        Int                   @id @default(autoincrement())
+  value                     String?               @db.VarChar(255)
+  slug                      String?               @db.VarChar(255)
+  product_attribute_unit_id Int
+  custom                    Boolean               @default(false)
+  custom_html_element_type  String?               @db.VarChar(255)
+  is_default                Boolean               @default(false)
+  created_at                DateTime              @default(now()) @db.DateTime(0)
+  updated_at                DateTime              @default(now()) @db.DateTime(0)
+  created_by                Int?                  @default(1)
+  updated_by                Int?                  @default(1)
+  ProductAttributeUnits     ProductAttributeUnits @relation(fields: [product_attribute_unit_id], references: [id])
+  ScopeOfWorks              ScopeOfWorks[]
+
+  @@unique([product_attribute_unit_id, slug], name: "product_attribute_unit_id_slug")
+}
+
+model ProductCategories {
+  id                            Int                             @id @default(autoincrement())
+  name                          String?                         @db.VarChar(255)
+  slug                          String?                         @unique @db.VarChar(255)
+  created_at                    DateTime                        @default(now()) @db.DateTime(0)
+  updated_at                    DateTime                        @default(now()) @db.DateTime(0)
+  created_by                    Int?                            @default(1)
+  updated_by                    Int?                            @default(1)
+  PropertyUnitProductCategories PropertyUnitProductCategories[]
+}
+
+model ProductPropertyUnits {
+  id               Int           @id @default(autoincrement())
+  property_unit_id Int
+  product_id       Int
+  created_at       DateTime      @default(now()) @db.DateTime(0)
+  updated_at       DateTime      @default(now()) @db.DateTime(0)
+  created_by       Int?          @default(1)
+  updated_by       Int?          @default(1)
+  Products         Products      @relation(fields: [product_id], references: [id])
+  PropertyUnits    PropertyUnits @relation(fields: [property_unit_id], references: [id])
+
+  @@unique([product_id, property_unit_id], name: "product_property_unit_slug")
+  @@index([property_unit_id], name: "property_unit_id")
+}
+
+model Products {
+  id                                  Int                                   @id @default(autoincrement())
+  parent_id                           Int?
+  name                                String?                               @db.VarChar(255)
+  slug                                String?                               @unique @db.VarChar(255)
+  created_at                          DateTime                              @default(now()) @db.DateTime(0)
+  updated_at                          DateTime                              @default(now()) @db.DateTime(0)
+  created_by                          Int?                                  @default(1)
+  updated_by                          Int?                                  @default(1)
+  Products                            Products?                             @relation("ProductsToProducts_parent_id", fields: [parent_id], references: [id])
+  ProductAttributeUnits               ProductAttributeUnits[]
+  ProductPropertyUnits                ProductPropertyUnits[]
+  other_Products                      Products[]                            @relation("ProductsToProducts_parent_id")
+  PropertyUnitProductCategoryProducts PropertyUnitProductCategoryProducts[]
+
+  @@index([parent_id], name: "parent_id")
+}
+
+model ProjectProposals {
+  id                       Int                        @id @default(autoincrement())
+  name                     String?                    @db.VarChar(255)
+  project_id               Int
+  proposal_status          String?                    @db.VarChar(255)
+  created_at               DateTime                   @default(now()) @db.DateTime(0)
+  updated_at               DateTime                   @default(now()) @db.DateTime(0)
+  created_by               Int?                       @default(1)
+  updated_by               Int?                       @default(1)
+  Projects                 Projects                   @relation(fields: [project_id], references: [id])
+  AreaOfWorks              AreaOfWorks[]
+  ScopeOfWorkPropertyUnits ScopeOfWorkPropertyUnits[]
+  ScopeOfWorks             ScopeOfWorks[]
+
+  @@index([project_id], name: "project_id")
+}
+
+model Projects {
+  id                      Int                       @id @default(autoincrement())
+  name                    String?                   @db.VarChar(255)
+  property_address_id     Int
+  created_at              DateTime                  @default(now()) @db.DateTime(0)
+  updated_at              DateTime                  @default(now()) @db.DateTime(0)
+  created_by              Int?                      @default(1)
+  updated_by              Int?                      @default(1)
+  start_date              DateTime                  @default(now()) @db.DateTime(0)
+  Property_Addresses      Property_Addresses        @relation(fields: [property_address_id], references: [id])
+  ProjectProposals        ProjectProposals[]
+  ProjectTypeAssociations ProjectTypeAssociations[]
+
+  @@index([property_address_id], name: "property_address_id")
+}
+
+model ProjectTypeAssociations {
+  id              Int          @id @default(autoincrement())
+  project_id      Int
+  project_type_id Int
+  created_at      DateTime     @default(now()) @db.DateTime(0)
+  updated_at      DateTime     @default(now()) @db.DateTime(0)
+  created_by      Int?         @default(1)
+  updated_by      Int?         @default(1)
+  Projects        Projects     @relation(fields: [project_id], references: [id])
+  ProjectTypes    ProjectTypes @relation(fields: [project_type_id], references: [id])
+
+  @@index([project_id], name: "project_id")
+  @@index([project_type_id], name: "project_type_id")
+}
+
+model ProjectTypes {
+  id                      Int                       @id @default(autoincrement())
+  type                    String                    @db.VarChar(255)
+  slug                    String                    @unique @db.VarChar(255)
+  created_at              DateTime                  @default(now()) @db.DateTime(0)
+  updated_at              DateTime                  @default(now()) @db.DateTime(0)
+  created_by              Int?                      @default(1)
+  updated_by              Int?                      @default(1)
+  ProjectTypeAssociations ProjectTypeAssociations[]
+}
+
+model PropertyLevels {
+  id            Int             @id @default(autoincrement())
+  name          String          @db.VarChar(255)
+  slug          String          @unique @db.VarChar(255)
+  created_at    DateTime        @default(now()) @db.DateTime(0)
+  updated_at    DateTime        @default(now()) @db.DateTime(0)
+  created_by    Int?            @default(1)
+  updated_by    Int?            @default(1)
+  UnitLocations UnitLocations[]
+}
+
+model PropertyOwners {
+  id                 Int                  @id @default(autoincrement())
+  user_id            Int
+  first_name         String?              @db.VarChar(255)
+  last_name          String?              @db.VarChar(255)
+  mobile             String?              @db.VarChar(255)
+  created_at         DateTime             @default(now()) @db.DateTime(0)
+  updated_at         DateTime             @default(now()) @db.DateTime(0)
+  created_by         Int?                 @default(1)
+  updated_by         Int?                 @default(1)
+  Users              Users                @relation(fields: [user_id], references: [id])
+  Property_Addresses Property_Addresses[]
+
+  @@index([user_id], name: "user_id")
+}
+
+model PropertySubTypes {
+  id                 Int                  @id @default(autoincrement())
+  property_type_id   Int
+  name               String               @db.VarChar(255)
+  slug               String               @unique @db.VarChar(255)
+  created_at         DateTime             @default(now()) @db.DateTime(0)
+  updated_at         DateTime             @default(now()) @db.DateTime(0)
+  created_by         Int?                 @default(1)
+  updated_by         Int?                 @default(1)
+  Property_Types     Property_Types       @relation(fields: [property_type_id], references: [id])
+  Property_Addresses Property_Addresses[]
+  UnitLocations      UnitLocations[]
+
+  @@index([property_type_id], name: "property_type_id")
+}
+
+model PropertyUnitAttributes {
+  id                       Int                        @id @default(autoincrement())
+  property_unit_id         Int
+  attribute_id             Int
+  attribute_unit_id        Int
+  html_element_type        String?                    @db.VarChar(255)
+  display_order            Int?                       @default(0)
+  created_at               DateTime                   @default(now()) @db.DateTime(0)
+  updated_at               DateTime                   @default(now()) @db.DateTime(0)
+  created_by               Int?                       @default(1)
+  updated_by               Int?                       @default(1)
+  Attributes               Attributes                 @relation(fields: [attribute_id], references: [id])
+  AttributeUnits           AttributeUnits             @relation(fields: [attribute_unit_id], references: [id])
+  PropertyUnits            PropertyUnits              @relation(fields: [property_unit_id], references: [id])
+  ScopeOfWorkPropertyUnits ScopeOfWorkPropertyUnits[]
+
+  @@index([attribute_id], name: "attribute_id")
+  @@index([attribute_unit_id], name: "attribute_unit_id")
+  @@index([property_unit_id], name: "property_unit_id")
+}
+
+model PropertyUnitProductCategories {
+  id                                  Int                                   @id @default(autoincrement())
+  property_unit_id                    Int
+  product_category_id                 Int
+  created_at                          DateTime                              @default(now()) @db.DateTime(0)
+  updated_at                          DateTime                              @default(now()) @db.DateTime(0)
+  created_by                          Int?                                  @default(1)
+  updated_by                          Int?                                  @default(1)
+  ProductCategories                   ProductCategories                     @relation(fields: [product_category_id], references: [id])
+  PropertyUnits                       PropertyUnits                         @relation(fields: [property_unit_id], references: [id])
+  PropertyUnitProductCategoryProducts PropertyUnitProductCategoryProducts[]
+
+  @@index([product_category_id], name: "product_category_id")
+  @@index([property_unit_id], name: "property_unit_id")
+}
+
+model PropertyUnitProductCategoryProducts {
+  id                                Int                           @id @default(autoincrement())
+  property_unit_product_category_id Int
+  product_id                        Int
+  display_order                     Int?                          @default(0)
+  created_at                        DateTime                      @default(now()) @db.DateTime(0)
+  updated_at                        DateTime                      @default(now()) @db.DateTime(0)
+  created_by                        Int?                          @default(1)
+  updated_by                        Int?                          @default(1)
+  Products                          Products                      @relation(fields: [product_id], references: [id])
+  PropertyUnitProductCategories     PropertyUnitProductCategories @relation(fields: [property_unit_product_category_id], references: [id])
+
+  @@index([product_id], name: "product_id")
+  @@index([property_unit_product_category_id], name: "property_unit_product_category_id")
+}
+
+model PropertyUnits {
+  id                            Int                             @id @default(autoincrement())
+  name                          String?                         @db.VarChar(255)
+  slug                          String?                         @unique @db.VarChar(255)
+  created_at                    DateTime                        @default(now()) @db.DateTime(0)
+  updated_at                    DateTime                        @default(now()) @db.DateTime(0)
+  created_by                    Int?                            @default(1)
+  updated_by                    Int?                            @default(1)
+  ProductPropertyUnits          ProductPropertyUnits[]
+  PropertyUnitAttributes        PropertyUnitAttributes[]
+  PropertyUnitProductCategories PropertyUnitProductCategories[]
+  UnitLocations                 UnitLocations[]
+}
+
+model Property_Addresses {
+  id                   Int              @id @default(autoincrement())
+  street               String?          @db.VarChar(255)
+  property_owner_id    Int
+  city_id              Int
+  property_sub_type_id Int
+  postal_code          String?          @db.VarChar(255)
+  construction_type    String?          @db.VarChar(255)
+  withBasement         Boolean          @default(false)
+  storyId              Int?
+  created_at           DateTime         @default(now()) @db.DateTime(0)
+  updated_at           DateTime         @default(now()) @db.DateTime(0)
+  created_by           Int?             @default(1)
+  updated_by           Int?             @default(1)
+  Cities               Cities           @relation(fields: [city_id], references: [id])
+  PropertyOwners       PropertyOwners   @relation(fields: [property_owner_id], references: [id])
+  PropertySubTypes     PropertySubTypes @relation(fields: [property_sub_type_id], references: [id])
+  Projects             Projects[]
+
+  @@index([city_id], name: "city_id")
+  @@index([property_owner_id], name: "property_owner_id")
+  @@index([property_sub_type_id], name: "property_sub_type_id")
+}
+
+model Property_Types {
+  id               Int                @id @default(autoincrement())
+  name             String             @db.VarChar(255)
+  slug             String             @unique @db.VarChar(255)
+  created_at       DateTime           @default(now()) @db.DateTime(0)
+  updated_at       DateTime           @default(now()) @db.DateTime(0)
+  created_by       Int?               @default(1)
+  updated_by       Int?               @default(1)
+  PropertySubTypes PropertySubTypes[]
+}
+
+model ScopeOfWorkPropertyUnits {
+  id                         Int                    @id @default(autoincrement())
+  project_proposal_id        Int
+  area_of_work_id            Int
+  property_unit_attribute_id Int
+  value                      String?                @db.VarChar(255)
+  attribute_custom_name      String?                @db.VarChar(255)
+  attribute_custom_value     String?                @db.VarChar(255)
+  attribute_custom_unit      String?                @db.VarChar(255)
+  created_at                 DateTime               @default(now()) @db.DateTime(0)
+  updated_at                 DateTime               @default(now()) @db.DateTime(0)
+  created_by                 Int?                   @default(1)
+  updated_by                 Int?                   @default(1)
+  AreaOfWorks                AreaOfWorks            @relation(fields: [area_of_work_id], references: [id])
+  ProjectProposals           ProjectProposals       @relation(fields: [project_proposal_id], references: [id])
+  PropertyUnitAttributes     PropertyUnitAttributes @relation(fields: [property_unit_attribute_id], references: [id])
+
+  @@index([area_of_work_id], name: "area_of_work_id")
+  @@index([project_proposal_id], name: "project_proposal_id")
+  @@index([property_unit_attribute_id], name: "property_unit_attribute_id")
+}
+
+model ScopeOfWorks {
+  id                              Int                        @id @default(autoincrement())
+  project_proposal_id             Int
+  area_of_work_id                 Int
+  product_attribute_unit_id       Int
+  product_attribute_unit_value_id Int
+  attribute_custom_name           String?                    @db.VarChar(255)
+  attribute_custom_value          String?                    @db.VarChar(255)
+  attribute_custom_unit           String?                    @db.VarChar(255)
+  created_at                      DateTime                   @default(now()) @db.DateTime(0)
+  updated_at                      DateTime                   @default(now()) @db.DateTime(0)
+  created_by                      Int?                       @default(1)
+  updated_by                      Int?                       @default(1)
+  AreaOfWorks                     AreaOfWorks                @relation(fields: [area_of_work_id], references: [id])
+  ProductAttributeUnits           ProductAttributeUnits      @relation(fields: [product_attribute_unit_id], references: [id])
+  ProductAttributeUnitValues      ProductAttributeUnitValues @relation(fields: [product_attribute_unit_value_id], references: [id])
+  ProjectProposals                ProjectProposals           @relation(fields: [project_proposal_id], references: [id])
+
+  @@index([area_of_work_id], name: "area_of_work_id")
+  @@index([product_attribute_unit_id], name: "product_attribute_unit_id")
+  @@index([product_attribute_unit_value_id], name: "product_attribute_unit_value_id")
+  @@index([project_proposal_id], name: "project_proposal_id")
+}
+
+model SequelizeMeta {
+  name String @id @db.VarChar(255)
+}
+
+model States {
+  id         Int       @id @default(autoincrement())
+  country_id Int
+  name       String?   @db.VarChar(255)
+  state_code String    @db.VarChar(3)
+  status     Boolean   @default(true)
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  updated_at DateTime  @default(now()) @db.DateTime(0)
+  created_by Int?      @default(1)
+  updated_by Int?      @default(1)
+  Countries  Countries @relation(fields: [country_id], references: [id])
+  Cities     Cities[]
+
+  @@unique([country_id, state_code], name: "country_id_state_code")
+}
+
+model UnitLocations {
+  id                   Int              @id @default(autoincrement())
+  unit_name            String?          @db.VarChar(255)
+  property_sub_type_id Int
+  property_level_id    Int
+  property_unit_id     Int
+  created_at           DateTime         @default(now()) @db.DateTime(0)
+  updated_at           DateTime         @default(now()) @db.DateTime(0)
+  created_by           Int?             @default(1)
+  updated_by           Int?             @default(1)
+  PropertyLevels       PropertyLevels   @relation(fields: [property_level_id], references: [id])
+  PropertySubTypes     PropertySubTypes @relation(fields: [property_sub_type_id], references: [id])
+  PropertyUnits        PropertyUnits    @relation(fields: [property_unit_id], references: [id])
+  AreaOfWorks          AreaOfWorks[]
+
+  @@unique([property_level_id, property_unit_id, property_sub_type_id], name: "product_property_unit_slug")
+  @@index([property_sub_type_id], name: "property_sub_type_id")
+  @@index([property_unit_id], name: "property_unit_id")
+}
+
+model Users {
+  id             Int              @id @default(autoincrement())
+  user_type      String           @db.VarChar(255)
+  email          String           @db.VarChar(255)
+  status         Boolean          @default(true)
+  created_at     DateTime         @default(now()) @db.DateTime(0)
+  updated_at     DateTime         @default(now()) @db.DateTime(0)
+  created_by     Int?             @default(1)
+  updated_by     Int?             @default(1)
+  username       String?          @db.VarChar(255)
+  email_verified Boolean          @default(false)
+  name           String?          @db.VarChar(255)
+  Backend_Users  Backend_Users[]
+  Contractors    Contractors[]
+  PropertyOwners PropertyOwners[]
+}

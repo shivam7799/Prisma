@@ -1,0 +1,15 @@
+scalar Date
+
+type Query {
+  projectTypeAssociationByProjectId(id: ID!): [Project_Type_Association]
+}
+
+type Project_Type_Association {
+  id: ID!
+  project_id: Int
+  project_type_id: Int
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

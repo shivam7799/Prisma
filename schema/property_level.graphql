@@ -1,0 +1,16 @@
+scalar Date
+
+type Query {
+  property_levels: [Property_Level]
+  property_levelById(id: ID!): Property_Level
+}
+
+type Property_Level {
+  id: ID!
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

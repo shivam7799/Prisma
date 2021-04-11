@@ -1,0 +1,311 @@
+service: backend
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-sequelize-migrations
+  - serverless-prune-plugin
+
+useDotenv: true
+
+provider:
+  name: aws
+  stage: api
+  region: us-west-2
+  versionFunctions: false
+  apiGateway:
+    shouldStartNameWithService: true
+  environment:
+    POOL_ID: ${env:POOL_ID}
+    CLIENT_ID: ${env:CLIENT_ID}
+    CLIENT_SECRET: ${env:CLIENT_SECRET}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "cognito-idp:AdminInitiateAuth"
+      Resource:
+        - "arn:aws:cognito-idp:*"
+
+functions:
+  userSignUpTrigger:
+    handler: functions/user_signup_trigger.signupTriggerHandler
+    runtime: nodejs12.x
+  user:
+    handler: functions/user.userHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: user
+          method: post
+          cors:
+            origin: "*"
+  contractor:
+    handler: functions/contractor.contractorHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: contractor
+          method: post
+          cors:
+            origin: "*"
+  backend_user:
+    handler: functions/backend_user.backend_userHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: backend_user
+          method: post
+          cors:
+            origin: "*"
+  country:
+    handler: functions/country.countryHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: country
+          method: post
+          cors:
+            origin: "*"
+  state:
+    handler: functions/state.stateHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: state
+          method: post
+          cors:
+            origin: "*"
+  city:
+    handler: functions/city.cityHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: city
+          method: post
+          cors:
+            origin: "*"
+  property_type:
+    handler: functions/property_type.property_typeHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: property_type
+          method: post
+          cors:
+            origin: "*"
+  property_sub_type:
+    handler: functions/property_sub_type.property_sub_typeHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: property_sub_type
+          method: post
+          cors:
+            origin: "*"
+  property_address:
+    handler: functions/property_address.property_addressHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: property_address
+          method: post
+          cors:
+            origin: "*"
+  property_owner:
+    handler: functions/property_owner.property_ownerHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: property_owner
+          method: post
+          cors:
+            origin: "*"
+  project:
+    handler: functions/project.projectHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: project
+          method: post
+          cors:
+            origin: "*"
+  project_type:
+    handler: functions/project_type.project_typeHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: project_type
+          method: post
+          cors:
+            origin: "*"
+  project_proposal:
+    handler: functions/project_proposal.project_proposalHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: project_proposal
+          method: post
+          cors:
+            origin: "*"
+  property_level:
+    handler: functions/property_level.property_levelHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: property_level
+          method: post
+          cors:
+            origin: "*"
+  attribute:
+    handler: functions/attribute.attributeHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: attribute
+          method: post
+          cors:
+            origin: "*"
+  product:
+    handler: functions/product.productHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: product
+          method: post
+          cors:
+            origin: "*"
+  product_attribute_unit:
+    handler: functions/product_attribute_unit.product_attribute_unitHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: product_attribute_unit
+          method: post
+          cors:
+            origin: "*"
+  product_attribute_unit_value:
+    handler: functions/product_attribute_unit_value.product_attribute_unit_valueHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: product_attribute_unit_value
+          method: post
+          cors:
+            origin: "*"
+  attribute_unit:
+    handler: functions/attribute_unit.attribute_unitHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: attribute_unit
+          method: post
+          cors:
+            origin: "*"
+  property_unit:
+    handler: functions/property_unit.property_unitHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: property_unit
+          method: post
+          cors:
+            origin: "*"
+  unit_location:
+    handler: functions/unit_location.unit_locationHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: unit_location
+          method: post
+          cors:
+            origin: "*"
+  area_of_work:
+    handler: functions/area_of_work.area_of_workHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: area_of_work
+          method: post
+          cors:
+            origin: "*"
+  project_type_association:
+    handler: functions/project_type_association.project_type_associationHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: project_type_association
+          method: post
+          cors:
+            origin: "*"
+  product_property_unit:
+    handler: functions/product_property_unit.product_property_unitHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: product_property_unit
+          method: post
+          cors:
+            origin: "*"
+  product_category:
+    handler: functions/product_category.product_categoryHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: product_category
+          method: post
+          cors:
+            origin: "*"
+  property_unit_product_category:
+    handler: functions/property_unit_product_category.property_unit_product_categoryHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: property_unit_product_category
+          method: post
+          cors:
+            origin: "*"
+  property_unit_product_category_product:
+    handler: functions/property_unit_product_category_product.property_unit_product_category_productHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: property_unit_product_category_product
+          method: post
+          cors:
+            origin: "*"
+  scope_of_work:
+    handler: functions/scope_of_work.scope_of_workHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: scope_of_work
+          method: post
+          cors:
+            origin: "*"
+  property_unit_attribute:
+    handler: functions/property_unit_attribute.property_unit_attributeHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: property_unit_attribute
+          method: post
+          cors:
+            origin: "*"
+  scope_of_work_property_unit:
+    handler: functions/scope_of_work_property_unit.scope_of_work_property_unitHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: scope_of_work_property_unit
+          method: post
+          cors:
+            origin: "*"
+  statement_of_work:
+    handler: functions/statement_of_work.statement_of_workHandler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: statement_of_work
+          method: post
+          cors:
+            origin: "*"

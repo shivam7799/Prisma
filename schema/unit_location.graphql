@@ -1,0 +1,81 @@
+scalar Date
+
+type Query {
+  unit_locations: [Unit_Location]
+  unit_locationById(id: ID!): Unit_Location
+  unitLocationByPropertySubTypeID(id: ID!): [Unit_Location]
+  unitLocationAreaOfWork(
+    property_sub_type_id: Int!
+    project_proposal_id: Int!
+  ): [Unit_Location_Area_Of_Work]
+}
+
+type Unit_Location {
+  id: ID!
+  property_sub_type_id: Int
+  property_level_id: Int
+  property_unit_id: Int
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  property_sub_type: Property_Sub_Type
+  property_level: Property_Level
+  property_unit: Property_Unit
+}
+
+type Property_Sub_Type {
+  id: ID!
+  property_type_id: Int
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  unit_locations: [Unit_Location]
+  unitLocationByPropertySubTypeID(id: ID!): [Unit_Location]
+}
+
+type Property_Level {
+  id: ID!
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  unit_locations: [Unit_Location]
+}
+
+type Property_Unit {
+  id: ID!
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  unit_locations: [Unit_Location]
+}
+
+type Unit_Location_Area_Of_Work {
+  id: ID!
+  unit_location_id: Int
+  area_of_work_id: Int
+  property_sub_type_id: Int
+  property_level_id: Int
+  property_unit_id: Int
+  project_proposal_id: Int
+  new_unit: String
+  existing_unit: String
+  unit_alias: String
+  work_type: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  property_sub_type: Property_Sub_Type
+  property_level: Property_Level
+  property_unit: Property_Unit
+}

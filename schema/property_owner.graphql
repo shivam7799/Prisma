@@ -1,0 +1,49 @@
+scalar Date
+
+type Query {
+  property_owners: [Property_Owner]
+  property_ownerById(id: ID!): Property_Owner
+}
+
+type Mutation {
+  createPropertyOwner(
+    user_id: Int!
+    first_name: String!
+    last_name: String
+    mobile: String
+    company_name: String
+    created_by: Int
+  ): Property_Owner!
+  updatePropertyOwner(
+    id: ID!
+    first_name: String
+    last_name: String
+    mobile: String
+    updated_by: Int
+  ): Property_Owner!
+  deletePropertyOwner(id: ID!): String
+}
+
+type Property_Owner {
+  id: ID!
+  user_id: Int
+  first_name: String
+  last_name: String
+  mobile: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  user: User
+}
+
+type User {
+  id: ID!
+  user_type: String
+  email: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  property_owners: [Property_Owner]
+}

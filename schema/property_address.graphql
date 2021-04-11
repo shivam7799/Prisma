@@ -1,0 +1,132 @@
+scalar Date
+
+type Query {
+  property_addresses: [Property_Address]
+  property_addressById(id: ID!): Property_Address
+  propertyAddressByPropertyOwnerId(id: ID!): [Property_Address]
+}
+
+type Mutation {
+  createPropertyAddress(
+    street: String!
+    property_owner_id: Int!
+    city_id: Int!
+    property_sub_type_id: Int!
+    construction_type: String!
+    postal_code: String
+    withBasement: Boolean!
+    storyId: Int!
+    created_by: Int
+  ): Property_Address!
+  updatePropertyAddress(
+    id: ID!
+    street: String
+    property_owner_id: Int!
+    city_id: Int!
+    property_sub_type_id: Int!
+    construction_type: String!
+    postal_code: String
+    withBasement: Boolean!
+    storyId: Int!
+    updated_by: Int
+  ): Property_Address!
+  deletePropertyAddress(id: ID!): String
+}
+
+type Property_Address {
+  id: ID!
+  street: String
+  property_owner_id: Int
+  city_id: Int
+  property_sub_type_id: Int
+  construction_type: String
+  postal_code: String
+  withBasement: Boolean
+  storyId: Int
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  property_owner: Property_Owner
+  city: City
+  state: State
+  country: Country
+  property_sub_type: Property_Sub_Type
+}
+
+type Property_Owner {
+  id: ID!
+  user_id: Int
+  first_name: String
+  last_name: String
+  mobile: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  property_addresses: [Property_Address]
+  propertyAddressByPropertyOwnerId(id: ID!): [Property_Address]
+}
+
+type City {
+  id: ID!
+  state_id: Int
+  name: String
+  status: Boolean
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  state: State
+  property_addresses: [Property_Address]
+}
+
+type State {
+  id: ID!
+  name: String
+  country_id: Int
+  state_code: String
+  status: Boolean
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  country: Country
+}
+
+type Country {
+  id: ID!
+  country_name: String
+  country_code: String
+  iso3: String
+  phone_code: String
+  status: Boolean
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}
+
+type Property_Sub_Type {
+  id: ID!
+  property_type_id: Int
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  property_addresses: [Property_Address]
+  property_type: Property_Type
+}
+
+type Property_Type {
+  id: ID!
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  property_sub_type: [Property_Sub_Type]
+}

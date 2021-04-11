@@ -1,0 +1,87 @@
+scalar Date
+
+type Query {
+  projects: [Project]
+  projectById(id: ID!): Project
+  projectByPropertyAddressId(id: ID!): [Project]
+}
+
+type Mutation {
+  createProject(
+    property_address_id: Int!
+    name: String!
+    created_by: Int
+    start_date: Date
+    project_types: [Project_Type]
+  ): Project!
+  updateProject(
+    id: ID!
+    name: String
+    property_address_id: Int
+    updated_by: Int
+    start_date: Date
+    project_types: [Project_Type]
+  ): Project!
+  deleteProject(id: ID!): String
+}
+
+type Project {
+  id: ID!
+  name: String
+  property_address_id: Int
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  start_date: Date
+  property_address: Property_Address
+  project_types: [Project_Type_Association]
+  project_proposal: [Project_Proposal]
+  areaOfWork: [AreaOfWork]
+}
+
+type Property_Address {
+  id: ID!
+  street: String
+  property_owner_id: Int
+  city_id: Int
+  property_sub_type_id: Int
+  postal_code: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  projects: [Project]
+  projectByPropertyAddressId(id: ID!): [Project]
+}
+
+type Project_Type_Association {
+  id: ID!
+  project_id: Int
+  project_type_id: Int
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  projects: [Project]
+  project_types: [Project]
+}
+
+type Project_Proposal {
+  id: ID!
+  name: String
+  project_id: Int
+  proposal_status: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}
+
+input Project_Type {
+  id: ID!
+}
+
+type AreaOfWork {
+  id: ID!
+}

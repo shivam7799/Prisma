@@ -1,0 +1,19 @@
+scalar Date
+
+type Query {
+  countries: [Country]
+  countryById(id: ID!): Country
+}
+
+type Country {
+  id: ID!
+  country_name: String
+  country_code: String
+  iso3: String
+  phone_code: String
+  status: Boolean
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

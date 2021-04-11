@@ -1,0 +1,45 @@
+scalar Date
+
+type Query {
+  backend_users: [Backend_User]
+  backend_userById(id: ID!): Backend_User
+}
+
+type Mutation {
+  createBackend_User(
+    user_id: Int!
+    first_name: String!
+    last_name: String
+    created_by: Int
+  ): Backend_User!
+  updateBackend_User(
+    id: ID!
+    first_name: String
+    last_name: String
+    updated_by: Int
+  ): Backend_User!
+  deleteBackend_User(id: ID!): String
+}
+
+type Backend_User {
+  id: ID!
+  user_id: Int
+  first_name: String
+  last_name: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  user: User
+}
+
+type User {
+  id: ID!
+  user_type: String
+  email: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  backend_users: [Backend_User]
+}

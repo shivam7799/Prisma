@@ -1,0 +1,43 @@
+scalar Date
+scalar JSONObject
+
+type Query {
+  scope_of_works: [Scope_Of_Work]
+  scope_of_workById(id: ID!): Scope_Of_Work
+  scope_of_work_detail(area_work_id: ID!): JSONObject
+}
+
+type Mutation {
+  saveScopeOfWork(data: [Save_Type]): String
+  deleteScopeOfWork(id: ID!): String
+}
+
+type Scope_Of_Work {
+  id: ID!
+  project_proposal_id: Int!
+  area_of_work_id: Int!
+  product_attribute_unit_id: Int!
+  product_attribute_unit_value_id: Int!
+  attribute_custom_name: String
+  attribute_custom_value: String
+  attribute_custom_unit: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}
+
+input Save_Type {
+  id: Int
+  project_proposal_id: Int!
+  area_of_work_id: Int!
+  product_attribute_unit_id: Int!
+  product_attribute_unit_value_id: Int!
+  attribute_custom_name: String
+  attribute_custom_value: String
+  attribute_custom_unit: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

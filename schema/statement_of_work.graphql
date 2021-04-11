@@ -1,0 +1,5 @@
+scalar JSONObject
+
+type Query {
+  statement_of_work_detail(project_proposal_id: ID!): JSONObject
+}

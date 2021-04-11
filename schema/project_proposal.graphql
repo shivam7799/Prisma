@@ -1,0 +1,47 @@
+scalar Date
+
+type Query {
+  project_proposals: [Project_Proposal]
+  project_proposalById(id: ID!): Project_Proposal
+}
+
+type Mutation {
+  createProjectProposal(
+    project_id: Int!
+    name: String!
+    proposal_status: String!
+    created_by: Int
+  ): Project_Proposal!
+  updateProjectProposal(
+    id: ID!
+    name: String
+    project_id: Int
+    proposal_status: String
+    updated_by: Int
+  ): Project_Proposal!
+  deleteProjectProposal(id: ID!): String
+}
+
+type Project_Proposal {
+  id: ID!
+  name: String
+  project_id: Int
+  proposal_status: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  project: Project
+}
+
+type Project {
+  id: ID!
+  name: String
+  property_address_id: Int
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  start_date: Date
+  project_proposals: [Project_Proposal]
+}

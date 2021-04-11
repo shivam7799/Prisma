@@ -1,0 +1,17 @@
+scalar Date
+
+type Query {
+  attributes: [Attribute]
+  attributeById(id: ID!): Attribute
+}
+
+type Attribute {
+  id: ID!
+  parent_id: Int
+  name: String
+  slug: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

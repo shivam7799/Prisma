@@ -1,0 +1,16 @@
+scalar Date
+
+type Query {
+  product_property_units: [Product_Property_Unit]
+  product_property_unitById(id: ID!): Product_Property_Unit
+}
+
+type Product_Property_Unit {
+  id: ID!
+  property_unit_id: Int!
+  product_id: Int!
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}

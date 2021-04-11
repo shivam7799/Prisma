@@ -1,0 +1,81 @@
+scalar Date
+
+type Query {
+  area_of_works: [AreaOfWork]
+  area_of_workById(id: ID!): AreaOfWork
+  area_of_workByProjectProposalId(id: ID!): [AreaOfWork]
+}
+
+type Mutation {
+  createAreaOfWork(
+    project_proposal_id: Int!
+    unit_location_id: Int!
+    new_unit: String!
+    existing_unit: String!
+    unit_alias: String!
+    work_type: String!
+    created_by: Int
+  ): AreaOfWork!
+  updateAreaOfWork(
+    id: ID!
+    project_proposal_id: Int
+    unit_location_id: Int
+    new_unit: String
+    existing_unit: String
+    unit_alias: String
+    work_type: String!
+    updated_by: Int
+  ): AreaOfWork!
+  deleteAreaOfWork(id: ID!): String
+}
+
+type AreaOfWork {
+  id: ID!
+  project_proposal_id: Int
+  unit_location_id: Int
+  new_unit: String
+  existing_unit: String
+  unit_alias: String
+  work_type: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  project_proposal: Project_Proposal
+  unit_location: Unit_Location
+}
+
+type Project_Proposal {
+  id: ID!
+  name: String
+  project_id: Int
+  proposal_status: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  area_of_works: [AreaOfWork]
+  area_of_workByProjectProposalId(id: ID!): [AreaOfWork]
+}
+
+type Unit_Location {
+  id: ID!
+  property_sub_type_id: Int
+  property_level_id: Int
+  property_unit_id: Int
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+  property_level: Property_Level
+  area_of_works: [AreaOfWork]
+}
+
+type Property_Level {
+  id: ID!
+  name: String
+  created_by: Int
+  updated_by: Int
+  created_at: Date
+  updated_at: Date
+}
